@@ -39,19 +39,20 @@ public class MainActivity extends AppCompatActivity {
 
         File exitFile = new File(  android.os.Environment.getExternalStorageDirectory(),"Download/video-out/out.mp4"  );
 
-        File imgSequences = new File(  android.os.Environment.getExternalStorageDirectory(),"Download/video-portfolio/temp%03d.png"  );
+        File imgSequences = new File(  android.os.Environment.getExternalStorageDirectory(),"Download/video-portfolio/temp%03d.jpg"  );
 
-        //File imgSequences = new File(  android.os.Environment.getExternalStorageDirectory(),"Download/video-portfolio/temp000.png"  );
+        File music = new File(  android.os.Environment.getExternalStorageDirectory(),"Download/music/believer.mp3"  );
 
         getImagesFromExternal();
 
+        String anim = "-filter_complex zoompan=z='zoom+0.002':d=25*4:s=852x480";
 
-        //FFmpeg.execute("-start_number 1 -i "+imgSequences+" -c:v mpeg4  -pix_fmt yuv420p "+exitFile);
+        FFmpeg.execute("-f image2 -r 1/6 -i "+imgSequences+" -i "+music+" "+anim+" -s 852x480 "+exitFile);
 
-        FFmpeg.execute("-r 1/5 -i "+imgSequences+" -c:v mpeg4 -r 30 -pix_fmt yuv420p "+exitFile);
+        //FFmpeg.execute("-f image2 -framerate 1/3 -i "+imgSequences+" -i "+music+" -filter_complex fade=t=in:s=2:n=5 -s 852x480 "+exitFile);
 
-        //FFmpeg.execute("-loop 1 -i "+imgSequences+" -c:v mpeg4 -t 30 -pix_fmt yuv420p "+exitFile);
 
+        //FFmpeg.execute("-f image2 -framerate 1/3 -i "+imgSequences+"  -i "+music+"  -s 852x480 "+exitFile);
 
         int rc = FFmpeg.getLastReturnCode();
         String output = FFmpeg.getLastCommandOutput();
